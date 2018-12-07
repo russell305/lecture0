@@ -1,8 +1,36 @@
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  text-align: left;
+}
+
+nav ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+  background-color: #e0ebe8;
+  position: fixed;
+}
+
+nav ul li {
+  display: flex;
+  margin:7vw;
+  margin-bottom: 15px;
+  margin-top: 25px;
+  font-size: 18px;;
+}
+
 h1 {
 	color:magenta; 
 	text-align:center
 }
 img {
 	width: 20%;
-	height:100px;
+	height:20%;
 }
