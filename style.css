@@ -1,12 +1,11 @@
 
 * {
   margin: 0;
-  padding: 0;
-}
+ }
 
 body {
   font-family: 'Open Sans', sans-serif;
-  text-align: left;
+  
 }
 
 nav ul {
@@ -29,8 +28,4 @@ nav ul li {
 h1 {
 	color:magenta; 
 	text-align:center
-}
-img {
-	width: 20%;
-	height:20%;
 }
