@@ -4,7 +4,7 @@ app = Flask(__name__) # Instantiate a new web application called `app`, with `__
 
 @app.route("/") # A decorator; when the user goes to the route `/`, exceute the function immediately below
 def index():
-	return "Hello, world!!!!"
+	return render_template("index.html")
 
 @app.route("/david")
 def david():
