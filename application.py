@@ -15,5 +15,5 @@ def index():
 
 #@app.route("/<string:name>")
 #def hello(name):
-	#name=name.capitalize()
+	#name=name.capitalize()q
 	#return f"Hello, {name}!"
