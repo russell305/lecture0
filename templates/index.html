@@ -18,7 +18,25 @@
 		</style>
 	</head>
 	<body>
+
 		<h1>{{headline}}</h1>
+
+		{% if new_year %}
+		<h1>"Yes happy new year"</h1>
+		{% else %}
+		<h1>"NO"</h1>
+		{% endif %}
+
+		<h1>names</h1>
+		<ul>
+			{% for i in names %}
+				<li> {{i}} </li>
+			{% endfor %}
+		</ul>
+
+		<h1>first page</h1>
+		<a href="{{ url_for('more') }}">more</a>
+
 	<nav>
 	  	<ul id='navbar'>
 		    <li><a href="index.html">Home</a></li>
