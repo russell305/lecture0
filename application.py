@@ -28,6 +28,14 @@ def bye():
 	headline = "goodbye"
 	return render_template("about.html")	
 
+@app.route("/inherit")
+def inherit():
+	return render_template("inherit.html")
+
+@app.route("/inherit1")
+def inherit1():
+	return render_template("inherit1.html")	
+
 
 #@app.route("/david")
 #def david():

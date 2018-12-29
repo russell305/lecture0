@@ -35,7 +35,9 @@
 		</ul>
 
 		<h1>first page</h1>
-		<a href="{{ url_for('more') }}">more</a>
+		<a href="{{ url_for('inherit') }}">inherit</a>
+		<h1>{% block heading %} {% endblock %}</h1>
+		{% block body %}{% endblock %}
 
 	<nav>
 	  	<ul id='navbar'>
