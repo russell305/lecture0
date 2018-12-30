@@ -1,5 +1,5 @@
 import datetime
-from flask import Flask, render_template # Import the class `Flask` from the `flask` module, written by someone else.
+from flask import Flask, render_template, request# Import the class `Flask` from the `flask` module, written by someone else.
 #export FLASK_APP=application.py
 
 app = Flask(__name__) # Instantiate a new web application called `app`, with `__name__` representing the current file
@@ -18,6 +18,11 @@ def index():
 	#return "Hello World"
 	headline = "Hello Russ"
 	return render_template("index.html", headline=headline)
+
+@app.route("/hello", methods = ["POST"])
+def hello():
+	name = 	request.form.get("name")
+	return render_template("hello.html", name=name)
 
 @app.route("/more")
 def more():
