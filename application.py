@@ -1,23 +1,20 @@
 import datetime
 from flask import Flask, render_template, request, session# Import the class `Flask` from the `flask` module, written by someone else.
-#from flask_session import Session
+from flask_session import Session
 #export FLASK_APP=application.py
 
 app = Flask(__name__) # Instantiate a new web application called `app`, with `__name__` representing the current file
 
-#app.config["SESSION_PERMANENT"] = False
-#app.config["SESSION_TYPE"] = "filesystem"
-#Session (app)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session (app)
 
-notes = []
+note_pad = []
+
 
 @app.route("/", methods = ["GET", "POST"]) # A decorator; when the user goes to the route `/`, exceute the function immediately below
 def index():
-	# if request.method=="POST":
-		# note = 	request.form.get("note")
-		# notes.append(note)
 	
-	# return render_template("notes.html", note=note)
 	#conditional
 	#now = datetime.datetime.now()
 	#new_year = now.month == 12 and now.day == 25
@@ -30,6 +27,16 @@ def index():
 	#return "Hello World"
 	headline = "Hello Russ"
 	return render_template("index.html", headline=headline)
+
+@app.route("/notes", methods = ["GET", "POST"])
+def notes():	
+	if request.method=="POST":
+		note = 	request.form.get("note")
+		print (note)
+
+		note_pad.append(note)
+		return render_template("notes.html", note_pad=note_pad) 
+	else: 	return render_template("notes.html")
 
 @app.route("/hello", methods = ["POST"])
 def hello():
@@ -50,12 +57,12 @@ def bye():
 
 @app.route("/inherit", methods = ["GET", "POST"])
 def inherit():
-	if request.method=="GET":
+	# if request.method=="GET":
 		# note = 	request.form.get("note")
 		# notes.append(note)
 
-		return render_template("notes.html")
-	#return render_template("inherit.html")
+		#return render_template("notes.html")
+	return render_template("inherit.html")
 
 @app.route("/inherit1")
 def inherit1():

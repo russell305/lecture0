@@ -5,8 +5,11 @@
 {% endblock %}
 
 {% block body %}
-	<p> random text lorem ipsum </p>
+	<p> INHERIT 1</p>
 	<a href="{{ url_for('inherit') }}">inherit</a>
+
+	<p> notes</p>
+	<a href="{{ url_for('notes') }}">notes</a>
 
 	<form action = "{{ url_for('hello') }}" method = "post">
 		<input type="text" name="name" placeholder="Enter your name" >
