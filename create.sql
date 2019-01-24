@@ -35,8 +35,6 @@ SELECT * FROM flights WHERE duration = "245";
 SELECT * FROM flights WHERE origin IN ('New York', 'Lima');
 SELECT * FROM flights WHERE origin LIKE '%a%'; # any origin that has an 'a' surrounded by text %=placeholder text
 
-
-
 #UPDATE changing data
 UPDATE flights SET duration = 430 WHERE origin = "New York" AND destination = "London";
 

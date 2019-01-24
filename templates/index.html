@@ -38,29 +38,31 @@
 		<h1>first page</h1>
 		<a href="{{ url_for('inherit') }}">inherit</a>
 		<h1>{% block heading %} {% endblock %}</h1>
+
+		
 		{% block body %}{% endblock %}
 
-	<nav>
-	  	<ul id='navbar'>
-		    <li><a href="index.html">Home</a></li>
-		    <li><a href="about.html">About</a></li>
-		    <li><a href="contact.html" >Contact</a></li>
-		    <li><a href="bootstrap.html" >bootstrap</a></li>
-		</ul>
-	</nav>
+		<nav>
+		  	<ul id='navbar'>
+			    <li><a href="index.html">Home</a></li>
+			    <li><a href="about.html">About</a></li>
+			    <li><a href="contact.html" >Contact</a></li>
+			    <li><a href="bootstrap.html" >bootstrap</a></li>
+			</ul>
+		</nav>
 	
 
 		<img src= "bat1.jpg">
 		<div>
-		 <i data-eva="unlock" data-eva-fill="#ff0000" data-eva-height="48" data-eva-width="48" data-eva-animation="flip" 
-		 data-eva-hover="false" data-eva-infinite="true"></i>
+			 <i data-eva="unlock" data-eva-fill="#ff0000" data-eva-height="48" data-eva-width="48" data-eva-animation="flip" 
+			 data-eva-hover="false" data-eva-infinite="true"></i>
 
-    <script>
-      eva.replace();
+		    <script>
+		      eva.replace();
 
-    </script>
+		    </script>
 
-	</div>
+		</div>
 		<h1>Hello World , hello again * 2!<h1/>
 	</body>
 </html>

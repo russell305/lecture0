@@ -9,4 +9,12 @@
 	<a href="{{ url_for('inherit1') }}">
 		inherit1
 	</a>
+	<div>
+
+	<form action = "{{ url_for('books') }}" method = "post">
+		<input type="text" name="name" placeholder="author" >
+		<button>submit</button>	
+	
+
+	</div>	
 {% endblock %}

@@ -11,7 +11,12 @@
 	<p> notes</p>
 	<a href="{{ url_for('notes') }}">notes</a>
 
+	<p> notes</p>
+	<a href="{{ url_for('books') }}">notes</a>
+
 	<form action = "{{ url_for('hello') }}" method = "post">
 		<input type="text" name="name" placeholder="Enter your name" >
 		<button>submit</button>
-{% endblock %}
+
+
+	{% endblock %}

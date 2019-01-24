@@ -5,15 +5,14 @@
 {% endblock %}
 
 {% block body %}
-	hello {{ name }}
+
 
 	<ul>
-      {% for i in name %}
+      {% for book in books %}
           <li>
-          	
-       		 <a href="{{ url_for('books',title=i.title) }}">
-                  {{ i.title }} by {{ i.author }}
-              </a>
+            
+                  {{ book.title }} by {{ book.author }}
+             
                   
              
           </li>
