@@ -13,12 +13,43 @@
 				height:20%;
 				margin-top: 400px;
 			}
-			
-
-		
 		</style>
+		<script>
+
+          </script>
 	</head>
 	<body>
+
+	<form action="{{ url_for('inherit1') }}" method="post">
+		<div>
+		 <input type="text" name="first" placeholder="First Name">
+		  </div>
+		  <div>
+		  <input type="text" name="last" placeholder="Your Name">
+		 </div> 
+		  <div>
+		  <input type="text" name="email" placeholder="Email">
+		 </div> 
+		  <div>
+		  <input type="text" name="phone" placeholder="Phone Number">
+		 </div> 
+		 <div>
+		  <input type="text" name="address" placeholder="address">
+		 </div>
+
+		<div class="container">
+    		<form role="form">
+      			<div class="form-group">
+        			<textarea class="form-control status-box" rows="5" placeholder="Tell us more about yourself"></textarea>
+      		</div>
+    		</form>
+    <div>
+
+
+		      <button>Submit</button>
+  	<form>
+
+  		
 
 		<h1>{{headline}}</h1>
 
@@ -65,4 +96,4 @@
 		</div>
 		<h1>Hello World , hello again * 2!<h1/>
 	</body>
-</html>
+

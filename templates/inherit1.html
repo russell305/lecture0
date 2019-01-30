@@ -1,7 +1,27 @@
 {%extends "layout.html"%}
 
 {% block heading %}
+	<style>
+		#button{
+		
+  			background-color: blue;
+    		width: 300px;
+    		height: 300px;
+  			margin: 10px;
+  
+		}
+	</style>
 	Second page
+	<div>
+	
+		{% for i in mechanic_list %}
+			<button id="button"> <a href="{{ url_for('mechanic',first=i.first) }}">{{i.first}} </a>
+
+			</button>
+		{% endfor %}
+	</div>
+
+
 {% endblock %}
 
 {% block body %}
@@ -17,6 +37,6 @@
 	<form action = "{{ url_for('hello') }}" method = "post">
 		<input type="text" name="name" placeholder="Enter your name" >
 		<button>submit</button>
-
+	</form>	
 
 	{% endblock %}
