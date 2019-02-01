@@ -88,11 +88,9 @@ def inherit1():
 	last = request.form.get("last")
 	email = request.form.get("email")
 	phone = request.form.get("phone")
-	address = request.form.get("address")
-	image = request.form.get("image")
 
 	
-	mechanic = Mechanic(first, last, email, phone, address, image)
+	mechanic = Mechanic(first, last, email, phone)
 	mechanic_list.append(mechanic)
 
 	return render_template("inherit1.html", mechanic_list=mechanic_list)		
