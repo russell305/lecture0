@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> My webpage </title>
+
+	</head>
+
+		<style>
+
+
+          #box {
+              display: inline-block;
+              height: 150px;
+              width: 250px;
+              border: 5px solid red;
+              padding: 5px;
+              margin: 10px;
+              font-size: 15px;
+              font-color: black;
+            }
+          </style>
+
+	<body>
+		
+		{% for i in mechanic_list %}
+        
+	 		
+	                <div id = "box"> 
+	                  
+	                   	Name {{i.name}}
+	                   	Phone {{i.phone}}
+	                   	{{i.email}}
+
+	                     
+	                </div> 
+	           <a href="{{ url_for('mechanic',full_name=i.full_name) }}">more info
+	           		</a>
+        {% endfor %}
+    	
+</body>
+
+</html>

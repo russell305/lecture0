@@ -22,42 +22,43 @@
 
 	<form action="{{ url_for('inherit1') }}" method="post">
 		<div>
-		 <input type="text" name="first" placeholder="First Name">
+		 <input type="text" name="name" placeholder="Name" maxlength="20">
 		  </div>
+
+			  <div>
+			  <input type="text" name="email" placeholder="Email" maxlength="40">
+			 </div> 
+			 
 		  <div>
-		  <input type="text" name="last" placeholder="Your Name">
-		 </div> 
-		  <div>
-		  <input type="text" name="email" placeholder="Email">
-		 </div> 
-		  <div>
-		  <input type="text" name="phone" placeholder="Phone Number">
+		  <input type="text" name="phone" placeholder="Phone Number" maxlength="20">
 		 </div> 
 		 <div>
-		  <input type="text" name="address" placeholder="address">
-		 </div>
+		  <input type="text" name="address" placeholder="address" maxlength="60">
+			 </div>
 
-		<div class="container">
-    		<form role="form">
-      			<div class="form-group">
-        			<textarea class="form-control status-box" rows="5" placeholder="Tell us more about yourself"></textarea>
-      		</div>
-    		</form>
-    <div>
-    	
-
-  <input type="file" name="image" accept="image/*">
-  </div>
-  	<div>
-    	
-
-  <button>Submit</button>
-  </div>
+			
+	    		
+	      			<div>
+	        			<textarea  name = "description" class=" status-box" rows="5"  maxlength="1000" placeholder="Tell us more about your experience"></textarea>
+	      		</div>
+	    	<div>
+	    	<button>Submit</button>
+	  </div>
 
 
 		      
   	</form>
+<div>
+	<input type="text" name="vehicle1" ><br><input type="text" name="address" placeholder="rate per hour">
+</div>		 
 
+<div>
+	<input type="checkbox" name="vehicle1" >brakes<br><input type="text" name="address" placeholder="price">
+</div>
+<div>
+    <input type="checkbox" name="vehicle2" > oil<br>  <input type="text" name="address" placeholder="price">
+</div>
+    	</div>
   		
 
 		<h1>{{headline}}</h1>

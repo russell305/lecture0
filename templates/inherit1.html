@@ -1,22 +1,132 @@
 {%extends "layout.html"%}
 
 {% block heading %}
-	  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	  <script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+   
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM&callback=initMap">
+    src = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM"
+  </script>
+  <style>
+    button{
+    
+        background-color: blue;
+        width: 150px;
+        height: 150px;
+      
+          
+  
+    }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+
+    #map {
+          height: 100%;
+         margin: 10%;
+      }
+
+          #box {
+              display: inline-block;
+              height: 150px;
+              width: 250px;
+              border: 5px solid red;
+              padding: 5px;
+              margin: 10px;
+              font-size: 15px;
+              font-color: black;
+              
+            }
+          
+        
+  </style>
+
+       {% for i in mechanic_list %}
+                  
+      
+                  <div id = "box"> 
+                    <ul class="list-unstyled">
+                       <li id = "name_{{i}}">Name {{ i.name }}</li>
+                       <li id = "phone_{{user_id}}" data-mechanic-id = "{{i.mechanic_id}}"data-number = "i.phone_{{i.phone}}">Phone {{ mechanic_id }}</li> 
+                       <li>Email {{ i.email }}</li> 
+                    </ul>
+                  </div>
+             <a href="{{ url_for('mechanic',full_name=i.full_name) }}">more info
+                </a>
+        {% endfor %}
+
+         
+
+        <div class="container-fluid">
+         <div class="row">
+                 <div class="col-md-3">COLUMN 1
+                </div>
+
+              <div class="col-md-9">MECHANIC INFO
+                   <div> 
+                    </div>
+              </div>
+          </div>
+      </div>
+
+{% endblock %}
+
+{% block body %}
+<p>Hello, <span id="username"></span></p>
+
+
+ <div id="map"></div>
+ <script>
+     
+  
+
+    var mechanic_id =JSON.parse('{{ mechanic_id | tojson | safe}}');
+    var user_id =JSON.parse('{{ user_id | tojson | safe}}');
+
+    document.querySelector('#username').innerHTML = user_id.user_id;
+ 
+   
       function initMap() {
-
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 3,
-          center: {lat: -28.024, lng: 140.887}
+          zoom: 8,
+          center: {lat: 25.7617, lng: -80.1}
         });
+ 
+        const russ = document.querySelector('#phone'+user_id.user_id);
+          
+          
+           var contentString=user_id.user_id;
+
+
+
+        var myLatLng = {lat: 25.7717, lng: -80.155};
+       var marker1 = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: 'Hello World!'
+      });
+      var infowindow1 = new google.maps.InfoWindow({
+        content: contentString
+      });
+      marker1.addListener('click', function() {
+         console.log("click1")
+        infowindow1.open(map, marker1);
+      });
+
+
 
         // Create an array of alphabetical characters used to label the markers.
         var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -37,106 +147,16 @@
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
       var locations = [
-        {lat: -31.563910, lng: 147.154312},
-        {lat: -33.718234, lng: 150.363181},
-        {lat: -33.727111, lng: 150.371124},
-        {lat: -33.848588, lng: 151.209834},
-        {lat: -33.851702, lng: 151.216968},
-        {lat: -34.671264, lng: 150.863657},
-        {lat: -35.304724, lng: 148.662905},
-        {lat: -36.817685, lng: 175.699196},
-        {lat: -36.828611, lng: 175.790222},
-        {lat: -37.750000, lng: 145.116667},
-        {lat: -37.759859, lng: 145.128708},
-        {lat: -37.765015, lng: 145.133858},
-        {lat: -37.770104, lng: 145.143299},
-        {lat: -37.773700, lng: 145.145187},
-        {lat: -37.774785, lng: 145.137978},
-        {lat: -37.819616, lng: 144.968119},
-        {lat: -38.330766, lng: 144.695692},
-        {lat: -39.927193, lng: 175.053218},
-        {lat: -41.330162, lng: 174.865694},
-        {lat: -42.734358, lng: 147.439506},
-        {lat: -42.734358, lng: 147.501315},
-        {lat: -42.735258, lng: 147.438000},
-        {lat: -43.999792, lng: 170.463352}
+        {lat: 26.563910, lng: -80.987},
+        
+        
+        {lat: 26.999792, lng: -80.99}
       ]
+
+
     </script>
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM&callback=initMap">
-    </script>
-	<style>
-		#button{
-		
-  			background-color: blue;
-    		width: 150px;
-    		height: 150px;
-  			margin: 10px;
-  
-		}
-
-		#map {
-	        height: 100%;
-	      }
-	      /* Optional: Makes the sample page fill the window. */
-	      html, body {
-	        height: 100%;
-	        margin: 10px;
-	        padding: 0;
-	      }
-	      
-	</style>
-
-	<div>
-
-		<div class="container-fluid">
-	<div class="row">
-	  <div class="col-md-2">.col-md-2
-	  </div>
-
-	  <div class="col-md-10">.col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10col-md-10
-	  	<div>
-	  	{% for i in mechanic_list %}
-		 
-			<button id="button"> <a href="{{ url_for('mechanic',first=i.first) }}">{{i.first}} </a>
-
-			</button>
-
-			<a href="{{ url_for('mechanic',first=i.first) }}">
-				
-			</a>
-			
-		{% endfor %}
-
-		</div>
-	  </div>
-
-</div>
-	<ul class="list-inline  text-center">
-	
-		 </ul>
-	</div>
 
 
 
-{% endblock %}
 
-{% block body %}
- <div id="map"></div>
-	<p> INHERIT 1</p>
-	<a href="{{ url_for('inherit') }}">inherit</a>
-
-	<p> notes</p>
-	<a href="{{ url_for('notes') }}">notes</a>
-
-	<p> notes</p>
-	<a href="{{ url_for('books') }}">notes</a>
-
-	<form action = "{{ url_for('hello') }}" method = "post">
-		<input type="text" name="name" placeholder="Enter your name" >
-		<button>submit</button>
-	</form>	
-
-	{% endblock %}
+  {% endblock %}

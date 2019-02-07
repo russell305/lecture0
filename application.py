@@ -4,7 +4,8 @@
 #secret: 0kmzCjBS62odOXkfg4EcYnoBND3IM28ANuEFlTlWig
 #import datetime
 from flask import Flask, render_template, request, session, jsonify# Import the class `Flask` from the `flask` module, written by someone else.
-#from flask_session import Session
+from flask_session import Session
+
 import os
 #import csv
 import requests #for JSON
@@ -13,10 +14,18 @@ from mechanic import Mechanic
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
+import json
+
+
+
 
 
 app = Flask(__name__) # Instantiate a new web application called `app`, with `__name__` representing the current file
 
+
+
+
+  
 #app.config["SESSION_PERMANENT"] = False
 #app.config["SESSION_TYPE"] = "filesystem"
 #Session (app)
@@ -84,27 +93,33 @@ def index():
 
 @app.route("/inherit1", methods = ["POST"])
 def inherit1():
-	first = request.form.get("first")
-	last = request.form.get("last")
+	name = request.form.get("name")
 	email = request.form.get("email")
 	phone = request.form.get("phone")
 	address = request.form.get("address")
+	description = request.form.get("description")
 	image = request.form.get("image")
+	mechanic_id={'mechanic_id': name}
+	user_id={'user_id': "0"}
+	user = {'firstname': "Mr.", 'lastname': "My Father's Son"}
+    
+	
+	print("mechanic_id", mechanic_id)		
 
 	
-	mechanic = Mechanic(first, last, email, phone, address, image)
+	mechanic = Mechanic( name, email, phone, address, description,  image, mechanic_id)
 	mechanic_list.append(mechanic)
 
-	return render_template("inherit1.html", mechanic_list=mechanic_list)		
+	return render_template("inherit1.html", mechanic_list=mechanic_list, mechanic_id=mechanic_id, user_id=user_id)		
 
-@app.route("/mechanic/<string:first>")
-def mechanic(first):
+@app.route("/mechanic/<string:full_name>")
+def mechanic(full_name):
 	"Individual Mechanic Data"
-	print(first)
-	#flight = Flight.query.get(flight_id)
-	#passengers = flight.passengers
-	#passengers = Passenger.query.filter_by(flight_id=flight_id).all()
-	return render_template("mechanic.html")
+	print(full_name)
+	for i in mechanic_list:
+		if i.full_name == full_name:
+			mechanic = i
+	return render_template("mechanic.html", mechanic=mechanic)
 
 @app.route("/books", methods= ["GET", "POST"])
 def books():
