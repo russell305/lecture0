@@ -11,7 +11,7 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-   
+
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
 
     </script>
@@ -20,13 +20,13 @@
   </script>
   <style>
     button{
-    
+
         background-color: blue;
         width: 150px;
         height: 150px;
-      
-          
-  
+
+
+
     }
       html, body {
         height: 100%;
@@ -40,7 +40,7 @@
          margin: 10%;
       }
 
-          #box {
+          .box {
               display: inline-block;
               height: 150px;
               width: 250px;
@@ -49,27 +49,27 @@
               margin: 10px;
               font-size: 15px;
               font-color: black;
-              
+
             }
-          
-        
+
+
   </style>
 
        {% for i in mechanic_list %}
-                  
-      
-                  <div id = "box"> 
-                    <ul class="list-unstyled">
-                       <li id = "name_{{i}}">Name {{ i.name }}</li>
-                       <li id = "phone_{{user_id}}" data-mechanic-id = "{{i.mechanic_id}}"data-number = "i.phone_{{i.phone}}">Phone {{ mechanic_id }}</li> 
-                       <li>Email {{ i.email }}</li> 
+
+
+                  <div class = "box">
+                    <ul class="list-unstyled" id = "mechanic{{mechanic_id}}">
+                       <li>Name {{ i.name["mechanic_name"] }} </li>
+                       <li>Phone {{ i.phone["mechanic_phone"] }} </li>
+                       <li>Email {{ datar }} </li>
                     </ul>
                   </div>
              <a href="{{ url_for('mechanic',full_name=i.full_name) }}">more info
                 </a>
         {% endfor %}
 
-         
+
 
         <div class="container-fluid">
          <div class="row">
@@ -77,7 +77,7 @@
                 </div>
 
               <div class="col-md-9">MECHANIC INFO
-                   <div> 
+                   <div>
                     </div>
               </div>
           </div>
@@ -91,69 +91,65 @@
 
  <div id="map"></div>
  <script>
-     
-  
 
-    var mechanic_id =JSON.parse('{{ mechanic_id | tojson | safe}}');
-    var user_id =JSON.parse('{{ user_id | tojson | safe}}');
 
-    document.querySelector('#username').innerHTML = user_id.user_id;
- 
-   
-      function initMap() {
+    var mechanic_address =JSON.parse('{{ mechanic_address| tojson | safe}}');
+    var mechanic_idj =JSON.parse('{{ mechanic_idj| tojson | safe}}');
+    var datar =JSON.parse('{{ datar| tojson | safe}}');
+
+    var zero = '0'
+
+     //var russ= document.querySelector('#mechanic0').innerHTML;
+     var num = mechanic_idj.mechanic_idj;
+     var n = num.toString();
+     var russ= document.querySelector('#mechanic'+n).innerHTML;
+
+
+
+
+    function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 8,
           center: {lat: 25.7617, lng: -80.1}
         });
- 
-        const russ = document.querySelector('#phone'+user_id.user_id);
-          
-          
-           var contentString=user_id.user_id;
+        var m = {};
+        for(var i=1; i<10; i++){
+            m[i] = "Something";
+        }
+        var contentString=m[2]
 
+        var i;
+        var marker = {}
+        //var infowindow = []
+        var myLatLng =[]
+        myLatLng[0] = {lat: 25.7717, lng: -80.155};
+        myLatLng[1] = {lat: 25.8717, lng: -80.355};
 
+        var chat =[]
+        chat[0] = "hi russ 1"
+        chat[1] = "hi russ 2"
 
-        var myLatLng = {lat: 25.7717, lng: -80.155};
-       var marker1 = new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-        title: 'Hello World!'
-      });
-      var infowindow1 = new google.maps.InfoWindow({
-        content: contentString
-      });
-      marker1.addListener('click', function() {
-         console.log("click1")
-        infowindow1.open(map, marker1);
-      });
+        for (i = 0; i < 2; i++) {
 
-
-
-        // Create an array of alphabetical characters used to label the markers.
-        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-        // Add some markers to the map.
-        // Note: The code uses the JavaScript Array.prototype.map() method to
-        // create an array of markers based on a given "locations" array.
-        // The map() method here has nothing to do with the Google Maps API.
-        var markers = locations.map(function(location, i) {
-          return new google.maps.Marker({
-            position: location,
-            label: labels[i % labels.length]
+          marker = new google.maps.Marker({
+          position: myLatLng[i],
+          map: map,
+          title: 'Hello World!'
           });
-        });
 
-        // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-      }
-      var locations = [
-        {lat: 26.563910, lng: -80.987},
-        
-        
-        {lat: 26.999792, lng: -80.99}
-      ]
+          // process multiple info windows
+          (function(marker, i) {
+              // add click event
+              google.maps.event.addListener(marker, 'click', function() {
+                  infowindow = new google.maps.InfoWindow({
+                      content: chat[i]
+                  });
+                  infowindow.open(map, marker);
+              });
+          })(marker, i);
 
+        }
+    }
 
     </script>
 
