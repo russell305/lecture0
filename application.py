@@ -51,35 +51,27 @@ flight_list.append(f3)
 #note_pad = []
 
 #db.execute("CREATE TABLE flights(id SERIAL PRIMARY KEY, origin VARCHAR NOT NULL, destination VARCHAR NOT NULL, duration INTEGER NOT NULL)")
-#db.execute("CREATE TABLE books2(id SERIAL PRIMARY KEY, isbn VARCHAR NOT NULL, title VARCHAR NOT NULL, author VARCHAR NOT NULL, year INTEGER NOT NULL)")
+#db.execute("CREATE TABLE books20(id SERIAL PRIMARY KEY, isbn VARCHAR NOT NULL, title VARCHAR NOT NULL, author VARCHAR NOT NULL, year INTEGER NOT NULL)")
 
 	#db.execute("DELETE FROM books1 WHERE id >'29'")
 #for i in range(20):
-#db.execute("INSERT INTO flights (origin, destination) VALUES ('New Delhi', 'Miami')")
-#db.execute("INSERT INTO flights (origin, destination) VALUES ('Atlanta', 'Bogota', '655')")
+db.execute("INSERT INTO flights (origin, destination, duration)  VALUES ('New Delhi', 'Miamibitch', '333')")
+#db.execute("INSERT INTO flights (origin, destination, duration)  VALUES ('Atlanta', 'Bogota', '655')")
 #db.execute("INSERT INTO flights (origin, destination, duration) VALUES ('NY', 'Tokyo', '424')")
 #sample injection code defense... db.execute("INSERT INTO passengers (name, flight_id) VALUES (:name, :flight_id)", {"name": name, "flight_id": flight_id})
 
 #db.commit()
 
 
-flights = db.execute("SELECT * FROM flights3").fetchall()
+flights = db.execute("SELECT * FROM flights").fetchall()
 #books1 = db.execute("SELECT * FROM books_2").fetchall()
 #top3= db.execute("SELECT * FROM books_2 ORDER BY id ASC LIMIT 3").fetchall()
 #for flight in flights:
 	#print(f"{flight.origin} to {flight.destination} minutes.")
 
 	#wont need this, set up database to take data from form and geocode and update datbase
-for i in flights:
-	params = {
-		'address': i.origin,
-	    'key': 'AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM',
-	}
-	#res = requests.get(GOOGLE_MAPS_API_URL, params=params)
-#respnse = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM')
-	#response = res.json()
-#print("jsonresonse",response)
-	#print("jsonresonse1",response['results'][0]['geometry']['location'])
+#for i in flights:
+
 
 print("flights",flights)
 print("flights",flights[0])
@@ -88,6 +80,12 @@ print("flights",flights[1].origin)
 #print("top3", top3)
 flight_origin =[]
 len(flight_origin)
+
+
+
+#db.execute("CREATE TABLE mechanic(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL, phone VARCHAR NOT NULL, address VARCHAR NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, email VARCHAR, oil_change SMALLINT NOT NULL, battery SMALLINT NOT NULL, pads_front SMALLINT NOT NULL, pads_back SMALLINT NOT NULL, starting_problem SMALLINT NOT NULL, check_engine SMALLINT NOT NULL, tune_up SMALLINT NOT NULL, starter SMALLINT NOT NULL, alternator SMALLINT NOT NULL, spark_plugs SMALLINT NOT NULL, valve_cover SMALLINT NOT NULL, air_filter SMALLINT NOT NULL, mobile_mechanic BOOLEAN, air_conditioning BOOLEAN, auto_body BOOLEAN, tire_rotation SMALLINT, fix_flat SMALLINT, car_wash SMALLINT)")
+#db.commit()
+
 @app.route("/", methods = ["GET"]) # A decorator; when the user goes to the route `/`, exceute the function immediately below
 def index():
 
@@ -99,13 +97,76 @@ def index():
 @app.route("/inherit1", methods = ["POST"])
 def inherit1():
 	name = request.form.get("name")
-	email = request.form.get("email")
 	phone = request.form.get("phone")
-	address = request.form.get("address")
+	street = request.form.get("street")
+	city = request.form.get("city")
+	state = request.form.get("state")
+	zip_code = request.form.get("zip_code")
+	email = request.form.get("email")
 	description = request.form.get("description")
+	oil_change = request.form.get("oil_change")
+	battery = request.form.get("battery")
+	pads_front = request.form.get("pads_front")
+	pads_back = request.form.get("pads_back")
+	starting_problem= request.form.get("starting_problem")
+	check_engine = request.form.get("check_engine")
+	tune_up = request.form.get("tune_up")
+	starter = request.form.get("starter")
+	alternator = request.form.get("alternator")
+	spark_plugs = request.form.get("spark_plugs")
+	valve_cover = request.form.get("valve_cover")
+	air_filter = request.form.get("air_filter")
+	mobile_mechanic = request.form.get("mobile_mechanic")
+	air_conditioning = request.form.get("air_conditioning")
+	auto_body = request.form.get("auto_body")
+	tire_rotation = request.form.get("tire_rotation")
+	fix_flat = request.form.get("fix_flat")
+	car_wash = request.form.get("car_wash")
+	address = street+", "+city+", "+state+", "+zip_code
+	print(address)
+	print('valve_cover', valve_cover)
+	print('mobile_mechanic', mobile_mechanic)
+	print('auto_body', auto_body)
+
+	if mobile_mechanic=="on":
+		mobile_mechanic=True
+		print ("mm true")
+	else:
+		mobile_mechanic=False
+		print ("mm false")
+
+	if air_conditioning=="on":
+		air_conditioning=True
+		print ("ac true")
+	else:
+		air_conditioning=False
+		print ("ac false")
+
+	if auto_body=="on":
+		auto_body=True
+		print ("auto_body true")
+	else:
+		auto_body=False
+		print ("auto_body false")
+
+	params = {
+		'address': address,
+		'key': 'AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM',
+	}
+	res = requests.get(GOOGLE_MAPS_API_URL, params=params)
+	response = res.json()
+	#print("jsonresonse",response)
+	latlng=response['results'][0]['geometry']['location']
+	latitude = latlng['lat']
+	longitude = latlng['lng']
+	print("lat", latlng['lat'])
+	print("lng", latlng['lng'])
+	print ("mobile_mechanic", mobile_mechanic)
+
+	#db.commit()
 
 	mechanic = Mechanic( name, email, phone, address, description)
-	#database create and read
+	
 	mechanic_list.append(mechanic)
 	for i in mechanic_list:
 		try:
