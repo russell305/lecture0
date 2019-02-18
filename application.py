@@ -55,10 +55,35 @@ flight_list.append(f3)
 
 	#db.execute("DELETE FROM books1 WHERE id >'29'")
 #for i in range(20):
-db.execute("INSERT INTO flights (origin, destination, duration)  VALUES ('New Delhi', 'Miamibitch', '333')")
+#db.execute("INSERT INTO flights (origin, destination, duration)  VALUES ('New Delhi', 'Miamibitch', '333')")
 #db.execute("INSERT INTO flights (origin, destination, duration)  VALUES ('Atlanta', 'Bogota', '655')")
 #db.execute("INSERT INTO flights (origin, destination, duration) VALUES ('NY', 'Tokyo', '424')")
-#sample injection code defense... db.execute("INSERT INTO passengers (name, flight_id) VALUES (:name, :flight_id)", {"name": name, "flight_id": flight_id})
+#db.execute("INSERT INTO passengers (name, flight_id) VALUES (:name, :flight_id)", {"name": name, "flight_id": flight_id})
+name="Rusty"
+phone="786-873-7526"
+address= "665 ne 83 terrace"
+latitude=25.8757
+longitude=-80.3655
+email="russm305@gmail.com"
+oil_change=5
+battery=6
+pads_front=8
+pads_back=8
+starting_problem=8
+check_engine=8
+tune_up=8
+starter=8
+alternator=8
+spark_plugs=8
+valve_cover=8
+air_filter=8
+mobile_mechanic=True
+air_conditioning=False
+auto_body=True
+tire_rotation=8
+fix_flat=8
+car_wash=8
+#db.execute("INSERT INTO mechanic (name, phone, address, latitude, longitude, email, oil_change, battery, pads_front, pads_back, starting_problem, check_engine, tune_up, starter, alternator, spark_plugs, valve_cover, air_filter, mobile_mechanic, air_conditioning, auto_body, tire_rotation, fix_flat, car_wash) VALUES (:name, :phone, :address, :latitude, :longitude, :email, :oil_change, :battery, :pads_front, :pads_back, :starting_problem, :check_engine, :tune_up, :starter, :alternator, :spark_plugs, :valve_cover, :air_filter, :mobile_mechanic, :air_conditioning, :auto_body, :tire_rotation, :fix_flat, :car_wash)", {"name":name, "phone":phone, "address":address, "latitude":latitude, "longitude":longitude, "email":email, "oil_change":oil_change, "battery":battery, "pads_front":pads_front, "pads_back":pads_back, "starting_problem":starting_problem, "check_engine":check_engine, "tune_up":tune_up, "starter":starter, "alternator":alternator, "spark_plugs":spark_plugs, "valve_cover":valve_cover, "air_filter":air_filter, "mobile_mechanic":mobile_mechanic, "air_conditioning":air_conditioning, "auto_body":auto_body, "tire_rotation":tire_rotation, "fix_flat":fix_flat, "car_wash":car_wash})
 
 #db.commit()
 
@@ -80,6 +105,8 @@ print("flights",flights[1].origin)
 #print("top3", top3)
 flight_origin =[]
 len(flight_origin)
+
+
 
 
 
@@ -166,7 +193,7 @@ def inherit1():
 	#db.commit()
 
 	mechanic = Mechanic( name, email, phone, address, description)
-	
+
 	mechanic_list.append(mechanic)
 	for i in mechanic_list:
 		try:
