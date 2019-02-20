@@ -87,15 +87,13 @@
  <script>
 
 
-    var mechanic_address =JSON.parse('{{ mechanic_address| tojson | safe}}');
-    var mechanic_idj =JSON.parse('{{ mechanic_idj| tojson | safe}}');
-    var mechanic_name =JSON.parse('{{ mechanic_name| tojson | safe}}');
-    var mechanic_phone =JSON.parse('{{ mechanic_phone| tojson | safe}}');
+    var mechanic_address=JSON.parse('{{ mechanic_address| tojson | safe}}');
+    var mechanic_idj=JSON.parse('{{ mechanic_idj| tojson | safe}}');
+    var mechanic_name=JSON.parse('{{ mechanic_name| tojson | safe}}');
+    var mechanic_phone=JSON.parse('{{ mechanic_phone| tojson | safe}}');
+    var flight_origin=JSON.parse('{{ flight_origin| tojson | safe}}');
 
-    var flight_origin =JSON.parse('{{ flight_origin| tojson | safe}}');
-
-
-     //var russ= document.querySelector('#mechanic0').innerHTML;
+    //var russ= document.querySelector('#mechanic0').innerHTML;
     var num = mechanic_idj.mechanic_idj;
     var n = flight_origin.length.toString();
     //I can use mechanic_name instaed of mechanic_name
@@ -135,7 +133,7 @@
               // add click event
               google.maps.event.addListener(marker, 'click', function() {
                   infowindow = new google.maps.InfoWindow({
-                      content: flight_origin[i]['origin']
+                      content: flight_origin[i]['destination']//mechanic_name[i]['name']
                   });
                   infowindow.open(map, marker);
               });

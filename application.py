@@ -18,9 +18,9 @@ app = Flask(__name__) # Instantiate a new web application called `app`, with `__
 
 GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
 
-#app.config["SESSION_PERMANENT"] = False
-#app.config["SESSION_TYPE"] = "filesystem"
-#Session (app)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session (app)
 
 engine = create_engine("postgres://ayjxjjxhgpzlnl:f150cc319da46e38a1fb398ee335d98fa5468668d0d8aa3da415aed475d08f9b@ec2-54-225-227-125.compute-1.amazonaws.com:5432/d9prh5mib7dh2p")
 #talk to datbase wiTh SQL. Object used to manage connections to database.
@@ -59,10 +59,10 @@ flight_list.append(f3)
 #db.execute("INSERT INTO flights (origin, destination, duration)  VALUES ('Atlanta', 'Bogota', '655')")
 #db.execute("INSERT INTO flights (origin, destination, duration) VALUES ('NY', 'Tokyo', '424')")
 #db.execute("INSERT INTO passengers (name, flight_id) VALUES (:name, :flight_id)", {"name": name, "flight_id": flight_id})
-name="Rusty"
-phone="786-873-7526"
+name="Rusty2"
+phone="786-872-7526"
 address= "665 ne 83 terrace"
-latitude=25.8757
+latitude=25.9757
 longitude=-80.3655
 email="russm305@gmail.com"
 oil_change=5
@@ -80,15 +80,14 @@ air_filter=8
 mobile_mechanic=True
 air_conditioning=False
 auto_body=True
-tire_rotation=8
-fix_flat=8
-car_wash=8
-#db.execute("INSERT INTO mechanic (name, phone, address, latitude, longitude, email, oil_change, battery, pads_front, pads_back, starting_problem, check_engine, tune_up, starter, alternator, spark_plugs, valve_cover, air_filter, mobile_mechanic, air_conditioning, auto_body, tire_rotation, fix_flat, car_wash) VALUES (:name, :phone, :address, :latitude, :longitude, :email, :oil_change, :battery, :pads_front, :pads_back, :starting_problem, :check_engine, :tune_up, :starter, :alternator, :spark_plugs, :valve_cover, :air_filter, :mobile_mechanic, :air_conditioning, :auto_body, :tire_rotation, :fix_flat, :car_wash)", {"name":name, "phone":phone, "address":address, "latitude":latitude, "longitude":longitude, "email":email, "oil_change":oil_change, "battery":battery, "pads_front":pads_front, "pads_back":pads_back, "starting_problem":starting_problem, "check_engine":check_engine, "tune_up":tune_up, "starter":starter, "alternator":alternator, "spark_plugs":spark_plugs, "valve_cover":valve_cover, "air_filter":air_filter, "mobile_mechanic":mobile_mechanic, "air_conditioning":air_conditioning, "auto_body":auto_body, "tire_rotation":tire_rotation, "fix_flat":fix_flat, "car_wash":car_wash})
+tire_rotation=None#check these  threewhen form goes to databas
+fix_flat=None
+car_wash=None
 
-#db.commit()
 
 
 flights = db.execute("SELECT * FROM flights").fetchall()
+
 #books1 = db.execute("SELECT * FROM books_2").fetchall()
 #top3= db.execute("SELECT * FROM books_2 ORDER BY id ASC LIMIT 3").fetchall()
 #for flight in flights:
@@ -109,8 +108,7 @@ len(flight_origin)
 
 
 
-
-#db.execute("CREATE TABLE mechanic(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL, phone VARCHAR NOT NULL, address VARCHAR NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, email VARCHAR, oil_change SMALLINT NOT NULL, battery SMALLINT NOT NULL, pads_front SMALLINT NOT NULL, pads_back SMALLINT NOT NULL, starting_problem SMALLINT NOT NULL, check_engine SMALLINT NOT NULL, tune_up SMALLINT NOT NULL, starter SMALLINT NOT NULL, alternator SMALLINT NOT NULL, spark_plugs SMALLINT NOT NULL, valve_cover SMALLINT NOT NULL, air_filter SMALLINT NOT NULL, mobile_mechanic BOOLEAN, air_conditioning BOOLEAN, auto_body BOOLEAN, tire_rotation SMALLINT, fix_flat SMALLINT, car_wash SMALLINT)")
+#db.execute("CREATE TABLE mechanic(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL, phone VARCHAR NOT NULL, address VARCHAR NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, email VARCHAR, oil_change SMALLINT NOT NULL, battery SMALLINT NOT NULL, pads_front SMALLINT NOT NULL, pads_back SMALLINT NOT NULL, starting_problem SMALLINT NOT NULL, check_engine SMALLINT NOT NULL, tune_up SMALLINT NOT NULL, starter SMALLINT NOT NULL, alternator SMALLINT NOT NULL, spark_plugs SMALLINT NOT NULL, valve_cover SMALLINT NOT NULL, air_filter SMALLINT NOT NULL, mobile_mechanic BOOLEAN NOT NULL, air_conditioning BOOLEAN NOT NULL, auto_body BOOLEAN NOT NULL, tire_rotation BOOLEAN NOT NULL, fix_flat BOOLEAN NOT NULL, car_wash BOOLEAN NOT NULL)")
 #db.commit()
 
 @app.route("/", methods = ["GET"]) # A decorator; when the user goes to the route `/`, exceute the function immediately below
@@ -151,30 +149,37 @@ def inherit1():
 	car_wash = request.form.get("car_wash")
 	address = street+", "+city+", "+state+", "+zip_code
 	print(address)
-	print('valve_cover', valve_cover)
-	print('mobile_mechanic', mobile_mechanic)
-	print('auto_body', auto_body)
 
 	if mobile_mechanic=="on":
 		mobile_mechanic=True
-		print ("mm true")
 	else:
 		mobile_mechanic=False
-		print ("mm false")
 
 	if air_conditioning=="on":
 		air_conditioning=True
-		print ("ac true")
 	else:
 		air_conditioning=False
-		print ("ac false")
 
 	if auto_body=="on":
 		auto_body=True
-		print ("auto_body true")
 	else:
 		auto_body=False
-		print ("auto_body false")
+
+	if fix_flat=="on":
+		fix_flat=True
+	else:
+		fix_flat=False
+
+	if tire_rotation=="on":
+		tire_rotation=True
+	else:
+		tire_rotation=False
+
+	if car_wash=="on":
+		car_wash=True
+	else:
+		car_wash=False
+
 
 	params = {
 		'address': address,
@@ -188,12 +193,28 @@ def inherit1():
 	longitude = latlng['lng']
 	print("lat", latlng['lat'])
 	print("lng", latlng['lng'])
-	print ("mobile_mechanic", mobile_mechanic)
 
-	#db.commit()
+
+	#before sign up check
+	#if session.get("id_table") not None:
+		#user_id=session["id_table"][0]
+		#print("user already exists", user_id)
+
+	db.execute("INSERT INTO mechanic (name, phone, address, latitude, longitude, email, oil_change, battery, pads_front, pads_back, starting_problem, check_engine, tune_up, starter, alternator, spark_plugs, valve_cover, air_filter, mobile_mechanic, air_conditioning, auto_body, tire_rotation, fix_flat, car_wash) VALUES (:name, :phone, :address, :latitude, :longitude, :email, :oil_change, :battery, :pads_front, :pads_back, :starting_problem, :check_engine, :tune_up, :starter, :alternator, :spark_plugs, :valve_cover, :air_filter, :mobile_mechanic, :air_conditioning, :auto_body, :tire_rotation, :fix_flat, :car_wash)", {"name":name, "phone":phone, "address":address, "latitude":latitude, "longitude":longitude, "email":email, "oil_change":oil_change, "battery":battery, "pads_front":pads_front, "pads_back":pads_back, "starting_problem":starting_problem, "check_engine":check_engine, "tune_up":tune_up, "starter":starter, "alternator":alternator, "spark_plugs":spark_plugs, "valve_cover":valve_cover, "air_filter":air_filter, "mobile_mechanic":mobile_mechanic, "air_conditioning":air_conditioning, "auto_body":auto_body, "tire_rotation":tire_rotation, "fix_flat":fix_flat, "car_wash":car_wash})
+	db.commit()
+	#after 1st sign up get id_table with ps-id
+	#if session.get("id_table") is None:
+        #session["id_table"] = []
+        #session["id_table"].append(1)
+
+
+
+	mechanicsD = db.execute("SELECT * FROM mechanic").fetchall()
+	print("mechanicsD",mechanicsD)
+	for i in mechanicsD:
+		print("mechanicsD",i)
 
 	mechanic = Mechanic( name, email, phone, address, description)
-
 	mechanic_list.append(mechanic)
 	for i in mechanic_list:
 		try:
@@ -214,8 +235,14 @@ def inherit1():
 
 
 	for i in flights:
-		print ("ruusman",i.origin)
-		origin = {'origin': i.origin}
+
+		#origin = {'origin': i.origin}
+		origin = {
+			"origin": i.origin,
+			"destination": i.destination,
+			"duration": i.duration,
+			}
+		print ("origin",origin)
 		flight_origin.append(origin)
 
 	print("flight_origin", flight_origin)
@@ -230,7 +257,7 @@ def inherit1():
 	mechanic_idj={'mechanic_idj': mechanic_id}
 
 	print("mechanic_name", mechanic_name["mechanic_name"])
-	return render_template("inherit1.html",flight_origin=flight_origin,  mechanic_name=mechanic_name, mechanic_phone=mechanic_phone, mechanic_list=mechanic_list, mechanic_address=mechanic_address,  mechanic_id=mechanic_id, mechanic_idj=mechanic_idj )
+	return render_template("inherit1.html",mechanicsD=mechanicsD, flight_origin=flight_origin,  mechanic_name=mechanic_name, mechanic_phone=mechanic_phone, mechanic_list=mechanic_list, mechanic_address=mechanic_address,  mechanic_id=mechanic_id, mechanic_idj=mechanic_idj )
 
 @app.route("/mechanic/<string:full_name>")
 def mechanic(full_name):
