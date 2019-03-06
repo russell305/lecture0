@@ -14,6 +14,7 @@ import json #for Python to Javascript
 import requests #for JSON
 from flights import Flight
 from mechanic import Mechanic
+from werkzeug.datastructures import ImmutableOrderedMultiDict
 app = Flask(__name__) # Instantiate a new web application called `app`, with `__name__` representing the current file
 
 GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
@@ -31,6 +32,7 @@ db = scoped_session(sessionmaker(bind=engine)) # for individual sessions
 #print("russ_api", russ_api)
 flight_list=[]
 mechanic_list=[]
+mechanic_group=[]
 
 f1 = Flight(origin="New York", destination="Paris", duration=540)
 flight_list.append(f1)
@@ -59,35 +61,14 @@ flight_list.append(f3)
 #db.execute("INSERT INTO flights (origin, destination, duration)  VALUES ('Atlanta', 'Bogota', '655')")
 #db.execute("INSERT INTO flights (origin, destination, duration) VALUES ('NY', 'Tokyo', '424')")
 #db.execute("INSERT INTO passengers (name, flight_id) VALUES (:name, :flight_id)", {"name": name, "flight_id": flight_id})
-name="Rusty2"
-phone="786-872-7526"
-address= "665 ne 83 terrace"
-latitude=25.9757
-longitude=-80.3655
-email="russm305@gmail.com"
-oil_change=5
-battery=6
-pads_front=8
-pads_back=8
-starting_problem=8
-check_engine=8
-tune_up=8
-starter=8
-alternator=8
-spark_plugs=8
-valve_cover=8
-air_filter=8
-mobile_mechanic=True
-air_conditioning=False
-auto_body=True
-tire_rotation=None#check these  threewhen form goes to databas
-fix_flat=None
-car_wash=None
 
 
+origin = 'NY'
+destination = "Tokyo"
 
 flights = db.execute("SELECT * FROM flights").fetchall()
-
+print ("russflight", flights)
+#flight = db.execute("SELECT * FROM flights WHERE id = :id AND destination = :dest", {"id": flight_id}, {"dest": destination}).fetchone
 #books1 = db.execute("SELECT * FROM books_2").fetchall()
 #top3= db.execute("SELECT * FROM books_2 ORDER BY id ASC LIMIT 3").fetchall()
 #for flight in flights:
@@ -107,7 +88,6 @@ len(flight_origin)
 
 
 
-
 #db.execute("CREATE TABLE mechanic(id SERIAL PRIMARY KEY, name VARCHAR NOT NULL, phone VARCHAR NOT NULL, address VARCHAR NOT NULL, latitude FLOAT NOT NULL, longitude FLOAT NOT NULL, email VARCHAR, oil_change SMALLINT NOT NULL, battery SMALLINT NOT NULL, pads_front SMALLINT NOT NULL, pads_back SMALLINT NOT NULL, starting_problem SMALLINT NOT NULL, check_engine SMALLINT NOT NULL, tune_up SMALLINT NOT NULL, starter SMALLINT NOT NULL, alternator SMALLINT NOT NULL, spark_plugs SMALLINT NOT NULL, valve_cover SMALLINT NOT NULL, air_filter SMALLINT NOT NULL, mobile_mechanic BOOLEAN NOT NULL, air_conditioning BOOLEAN NOT NULL, auto_body BOOLEAN NOT NULL, tire_rotation BOOLEAN NOT NULL, fix_flat BOOLEAN NOT NULL, car_wash BOOLEAN NOT NULL)")
 #db.commit()
 
@@ -118,6 +98,32 @@ def index():
 	new_year = True
 	headline = "Hello Russ"
 	return render_template("index.html", headline=headline, names=names, new_year=new_year)
+
+@app.route('/ipn/',methods=['POST'])
+def ipn():
+	arg = ''
+	request.parameter_storage_class = ImmutableOrderedMultiDict
+	values = request.form
+	for x, y in values.iteritems():
+		arg += "&{x}={y}".format(x=x,y=y)
+
+	validate_url = 'https://www.paypal.com' \
+				   '/cgi-bin/webscr?cmd=_notify-validate{arg}' \
+				   .format(arg=arg)
+	r = requests.get(validate_url)
+	if r.text == 'VERIFIED':
+		return "Success"
+	else:
+		return "Failure"
+
+
+@app.route('/purchase/')
+def purchase():
+	return render_template("subscribe.html")
+
+@app.route('/success/')
+def success():
+	return render_template("success.html")
 
 @app.route("/inherit1", methods = ["POST"])
 def inherit1():
@@ -150,6 +156,8 @@ def inherit1():
 	address = street+", "+city+", "+state+", "+zip_code
 	print(address)
 
+
+
 	if mobile_mechanic=="on":
 		mobile_mechanic=True
 	else:
@@ -180,7 +188,7 @@ def inherit1():
 	else:
 		car_wash=False
 
-
+	#geocode
 	params = {
 		'address': address,
 		'key': 'AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM',
@@ -208,12 +216,6 @@ def inherit1():
         #session["id_table"].append(1)
 
 
-
-	mechanicsD = db.execute("SELECT * FROM mechanic").fetchall()
-	print("mechanicsD",mechanicsD)
-	for i in mechanicsD:
-		print("mechanicsD",i)
-
 	mechanic = Mechanic( name, email, phone, address, description)
 	mechanic_list.append(mechanic)
 	for i in mechanic_list:
@@ -234,9 +236,23 @@ def inherit1():
 		pprint(vars(mechanic_list[mech_num]))
 
 
-	for i in flights:
 
-		#origin = {'origin': i.origin}
+	mechanicsD = db.execute("SELECT * FROM mechanic").fetchall()
+	print("mechanicsD",mechanicsD)
+	for i in mechanicsD:
+		print("mechanicsD",i)
+		mechanic_data = {
+			"name": i.name,
+			"phone": i.phone,
+			"address": i.address,
+			"longitude": i.longitude,
+			"latitude": i.latitude,
+			"address": i.address,
+			"email": i.email,
+			}
+		mechanic_group.append(mechanic_data)
+
+	for i in flights:
 		origin = {
 			"origin": i.origin,
 			"destination": i.destination,
@@ -257,7 +273,7 @@ def inherit1():
 	mechanic_idj={'mechanic_idj': mechanic_id}
 
 	print("mechanic_name", mechanic_name["mechanic_name"])
-	return render_template("inherit1.html",mechanicsD=mechanicsD, flight_origin=flight_origin,  mechanic_name=mechanic_name, mechanic_phone=mechanic_phone, mechanic_list=mechanic_list, mechanic_address=mechanic_address,  mechanic_id=mechanic_id, mechanic_idj=mechanic_idj )
+	return render_template("inherit1.html",mechanic_group=mechanic_group, mechanicsD=mechanicsD, flight_origin=flight_origin,  mechanic_name=mechanic_name, mechanic_phone=mechanic_phone, mechanic_list=mechanic_list, mechanic_address=mechanic_address,  mechanic_id=mechanic_id, mechanic_idj=mechanic_idj )
 
 @app.route("/mechanic/<string:full_name>")
 def mechanic(full_name):

@@ -11,10 +11,6 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-
-    </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM&callback=initMap">
       src = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyD9fytSdXXr6kVZdXLddFJyF9HT4JTt-qM"
     </script>
@@ -63,16 +59,11 @@
 
       <div class="container-fluid">
          <div class="row">
-                 <div class="col-md-4">COLUMN 1
-                </div>
-
-              <div class="col-md-4">MECHANIC INFO
-                   <div>
-                    </div>
+              <div class="col-md-4">COLUMN 1
               </div>
-              <div class="col-md-4">MECHANIC INFO
-                   <div>
-                    </div>
+              <div class="col-md-4">Column2
+              </div>
+              <div class="col-md-4">Column3
               </div>
           </div>
       </div>
@@ -86,59 +77,32 @@
  <div id="map"></div>
  <script>
 
-
-    var mechanic_address=JSON.parse('{{ mechanic_address| tojson | safe}}');
-    var mechanic_idj=JSON.parse('{{ mechanic_idj| tojson | safe}}');
-    var mechanic_name=JSON.parse('{{ mechanic_name| tojson | safe}}');
-    var mechanic_phone=JSON.parse('{{ mechanic_phone| tojson | safe}}');
-    var flight_origin=JSON.parse('{{ flight_origin| tojson | safe}}');
-
-    //var russ= document.querySelector('#mechanic0').innerHTML;
-    var num = mechanic_idj.mechanic_idj;
-    var n = flight_origin.length.toString();
-    //I can use mechanic_name instaed of mechanic_name
-    var russ= document.querySelector('#mechanic'+n).innerHTML;
-
-
-
-
+    var mechanic_group=JSON.parse('{{ mechanic_group| tojson | safe}}');
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 8,
           center: {lat: 25.7617, lng: -80.1}
         });
 
-        var i;
         var marker = {}
-        //var infowindow = []
+
         var myLatLng =[]
-        myLatLng[0] = {lat: 25.7717, lng: -80.155};
-        myLatLng[1] = {lat: 25.8717, lng: -80.355};
-        myLatLng[2] = {lat: 25.8517, lng: -80.155};
-        myLatLng[3] = {lat: 25.9417, lng: -80.055};
-
-        var chat =[flight_origin[0]['origin'], n, n, n]
-
-
-        for (i = 0; i < flight_origin.length; i++) {
-
+        for (var i = 0; i < mechanic_group.length; i++) {
+          myLatLng[i] = {lat: mechanic_group[i]['latitude'], lng: mechanic_group[i]['longitude']};
           marker = new google.maps.Marker({
           position: myLatLng[i],
           map: map,
           title: 'Hello World!'
           });
-
           // process multiple info windows
           (function(marker, i) {
-              // add click event
-              google.maps.event.addListener(marker, 'click', function() {
+            google.maps.event.addListener(marker, 'click', function() {
                   infowindow = new google.maps.InfoWindow({
-                      content: flight_origin[i]['destination']//mechanic_name[i]['name']
+                      content: mechanic_group[i]['name']
                   });
                   infowindow.open(map, marker);
               });
           })(marker, i);
-
         }
     }
 
